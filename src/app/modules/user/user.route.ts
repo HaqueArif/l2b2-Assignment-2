@@ -9,5 +9,6 @@ router.post('/create-user', UserController.createUser)
 router.get('/', UserController.getAllUsers)
 //get single or specific user by userId
 router.get('/:userId', UserController.getSingleUser)
+router.put('/:userId', UserController.updateUser)
 
 export const UserRoutes = router
