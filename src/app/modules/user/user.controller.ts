@@ -88,18 +88,30 @@ const updateUser = async (req: Request, res: Response) => {
       parseFloat(id),
       updatedUserData,
     )
-    res.status(200).json({
-      success: true,
-      message: 'User updated successfully!',
-      data: result,
-    })
+
+    if (!result) {
+      res.status(404).json({
+        success: false,
+        message: 'User not found',
+        error: {
+          code: 404,
+          description: 'User not found',
+        },
+      })
+    } else {
+      res.status(200).json({
+        success: true,
+        message: 'User updated successfully!',
+        data: result,
+      })
+    }
   } catch (error: any) {
-    res.status(400).json({
+    res.status(500).json({
       success: false,
-      message: JSON.parse(error.message)[0].message,
+      message: error.message || 'Internal Server Error',
       error: {
-        code: 400,
-        description: JSON.parse(error.message)[0].message,
+        code: 500,
+        description: error.message || 'Internal Server Error',
       },
     })
   }
