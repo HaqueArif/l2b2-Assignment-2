@@ -2,12 +2,10 @@ import { TOrder, TUser } from './user.interface'
 import User from './user.model'
 
 const createUserIntoDB = async (user: TUser) => {
-  //   const trueUser = await User.isUserExists(user.userId)
-  //   if (!trueUser) {
-  //     throw new Error('User already exists')
-  //   }
+  if (await User.isUserExists(user.userId)) {
+    throw new Error('user is not found')
+  }
   const result = await User.create(user)
-
   return result
 }
 
@@ -76,12 +74,8 @@ const getUserTotalOrderAmount = async (userId: number) => {
   }
 
   const result = await User.aggregate([
-    {
-      $match: { userId },
-    },
-    {
-      $unwind: '$orders',
-    },
+    { $match: { userId } },
+    { $unwind: '$orders' },
     {
       $group: {
         _id: null,
@@ -89,10 +83,7 @@ const getUserTotalOrderAmount = async (userId: number) => {
       },
     },
     {
-      $project: {
-        _id: 0,
-        totalPrice: 1,
-      },
+      $project: { _id: 0, totalPrice: 1 },
     },
   ])
 

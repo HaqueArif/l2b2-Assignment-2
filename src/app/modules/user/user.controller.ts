@@ -16,6 +16,7 @@ const createUser = async (req: Request, res: Response) => {
       message: 'User created successfully!',
       data: result,
     })
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (error: any) {
     res.status(500).json({
       success: false,
@@ -33,6 +34,7 @@ const getAllUsers = async (req: Request, res: Response) => {
       message: 'Users fetched successfully!',
       data: result,
     })
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (error: any) {
     res.status(500).json({
       success: false,
@@ -64,6 +66,7 @@ const getSingleUser = async (req: Request, res: Response) => {
         data: result,
       })
     }
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (error: any) {
     res.status(500).json({
       success: false,
@@ -99,6 +102,7 @@ const updateUser = async (req: Request, res: Response) => {
         data: result,
       })
     }
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (error: any) {
     res.status(500).json({
       success: false,
@@ -123,6 +127,7 @@ const deleteUser = async (req: Request, res: Response) => {
       message: 'User deleted successfully!',
       data: result,
     })
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (error: any) {
     res.status(500).json({
       success: false,
@@ -153,6 +158,7 @@ const addNewProduct = async (req: Request, res: Response) => {
         data: null,
       })
     }
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (error: any) {
     res.status(500).json({
       success: false,
@@ -177,6 +183,7 @@ const getSingleUserOrders = async (req: Request, res: Response) => {
       message: 'Order fetched successfully!',
       data: result,
     })
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (error: any) {
     res.status(500).json({
       success: false,
@@ -203,6 +210,7 @@ const getUserTotalOrderAmount = async (req: Request, res: Response) => {
       message: 'Total price calculated successfully!',
       data: result,
     })
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (error: any) {
     res.status(500).json({
       success: false,
