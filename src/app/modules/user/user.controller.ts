@@ -165,6 +165,56 @@ const addNewProduct = async (req: Request, res: Response) => {
   }
 }
 
+const getSingleUserOrders = async (req: Request, res: Response) => {
+  try {
+    const userId = req.params.userId
+
+    const result = await UserServices.getOrdersInfoFromDb(parseFloat(userId))
+
+    // Sending response
+    res.status(200).json({
+      success: true,
+      message: 'Order fetched successfully!',
+      data: result,
+    })
+  } catch (error: any) {
+    res.status(500).json({
+      success: false,
+      message: error.message || 'Internal Server Error',
+      error: {
+        code: 500,
+        description: error.message || 'Internal Server Error',
+      },
+    })
+  }
+}
+
+const getUserTotalOrderAmount = async (req: Request, res: Response) => {
+  try {
+    const userId = req.params.userId
+
+    const result = await UserServices.getUserTotalOrderAmount(
+      parseFloat(userId),
+    )
+
+    // Sending response
+    res.status(200).json({
+      success: true,
+      message: 'Total price calculated successfully!',
+      data: result,
+    })
+  } catch (error: any) {
+    res.status(500).json({
+      success: false,
+      message: error.message || 'Internal Server Error',
+      error: {
+        code: 500,
+        description: error.message || 'Internal Server Error',
+      },
+    })
+  }
+}
+
 export const UserController = {
   createUser,
   getAllUsers,
@@ -172,4 +222,6 @@ export const UserController = {
   updateUser,
   deleteUser,
   addNewProduct,
+  getSingleUserOrders,
+  getUserTotalOrderAmount,
 }
