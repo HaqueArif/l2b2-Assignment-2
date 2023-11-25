@@ -9,7 +9,9 @@ router.post('/create-user', UserController.createUser)
 router.get('/', UserController.getAllUsers)
 //get single or specific user by userId
 router.get('/:userId', UserController.getSingleUser)
+//update user or user info
 router.put('/:userId', UserController.updateUser)
-// router.delete('/:userId', UserController.deleteUser)
+//delete user
+router.delete('/:userId', UserController.deleteUser)
 
 export const UserRoutes = router

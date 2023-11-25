@@ -33,7 +33,7 @@ const updateUserInfoDB = async (userId: number, updatedUserData: TUser) => {
 }
 
 const deleteUserFromDB = async (userId: number) => {
-  const result = await User.findOneAndDelete({ userId })
+  const result = await User.updateOne({ userId }, { isDeleted: true })
   return result
 }
 export const UserServices = {

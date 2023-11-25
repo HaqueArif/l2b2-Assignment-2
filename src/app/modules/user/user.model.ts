@@ -96,10 +96,13 @@ const userSchema = new Schema<TUser, UserModel>({
   orders: {
     type: [ordersSchema],
   },
+  isDeleted: {
+    type: Boolean,
+    default: false,
+  },
 })
 
 userSchema.pre('save', async function (next) {
-  // hashing password and save into DB
   // eslint-disable-next-line @typescript-eslint/no-this-alias
   const user = this
   user.password = await bcrypt.hash(
@@ -109,9 +112,17 @@ userSchema.pre('save', async function (next) {
   next()
 })
 
-// post save middleware
 userSchema.post('save', function (doc, next) {
   doc.password = ''
+  next()
+})
+
+userSchema.pre('find', function (next) {
+  this.find({ isDeleted: { $ne: true } })
+  next()
+})
+userSchema.pre('findOne', function (next) {
+  this.find({ isDeleted: { $ne: true } })
   next()
 })
 
