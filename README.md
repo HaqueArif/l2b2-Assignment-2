@@ -4,8 +4,7 @@
 ## Prerequisites
 
 Before you begin, make sure you have the following installed:
-
-- [Node.js](https://nodejs.org/)
+Node js, Express, mongoose, typescript
 
 ## Getting Started
 
