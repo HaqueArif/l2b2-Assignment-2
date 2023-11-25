@@ -1,5 +1,7 @@
-import { Schema, model, connect } from 'mongoose'
+import { Schema, model } from 'mongoose'
 import UserModel, { TAddress, TFullName, TOrder, TUser } from './user.interface'
+import bcrypt from 'bcrypt'
+import config from '../../config'
 
 const fullNameSchema = new Schema<TFullName>({
   firstName: {
@@ -94,6 +96,23 @@ const userSchema = new Schema<TUser, UserModel>({
   orders: {
     type: [ordersSchema],
   },
+})
+
+userSchema.pre('save', async function (next) {
+  // hashing password and save into DB
+  // eslint-disable-next-line @typescript-eslint/no-this-alias
+  const user = this
+  user.password = await bcrypt.hash(
+    user.password,
+    Number(config.bcrypt_salt_rounds),
+  )
+  next()
+})
+
+// post save middleware
+userSchema.post('save', function (doc, next) {
+  doc.password = ''
+  next()
 })
 
 userSchema.statics.isUserExists = async function (userId: number) {

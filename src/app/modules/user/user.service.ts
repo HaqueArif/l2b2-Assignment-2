@@ -2,10 +2,10 @@ import { TUser } from './user.interface'
 import User from './user.model'
 
 const createUserIntoDB = async (user: TUser) => {
-  const trueUser = await User.isUserExists(user.userId)
-  if (!trueUser) {
-    throw new Error('User already exists')
-  }
+  //   const trueUser = await User.isUserExists(user.userId)
+  //   if (!trueUser) {
+  //     throw new Error('User already exists')
+  //   }
   const result = await User.create(user)
 
   return result
