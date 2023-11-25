@@ -135,10 +135,41 @@ const deleteUser = async (req: Request, res: Response) => {
   }
 }
 
+const addNewProduct = async (req: Request, res: Response) => {
+  try {
+    const userId = req.params.userId
+    const newProduct = req.body.product
+
+    const result = await UserServices.addNewProductIntoDB(
+      parseFloat(userId),
+      newProduct,
+    )
+
+    // Sending response
+    if (result.acknowledged === true) {
+      res.status(200).json({
+        success: true,
+        message: 'Order created successfully!',
+        data: null,
+      })
+    }
+  } catch (error: any) {
+    res.status(500).json({
+      success: false,
+      message: error.message || 'Internal Server Error',
+      error: {
+        code: 500,
+        description: error.message || 'Internal Server Error',
+      },
+    })
+  }
+}
+
 export const UserController = {
   createUser,
   getAllUsers,
   getSingleUser,
   updateUser,
   deleteUser,
+  addNewProduct,
 }
