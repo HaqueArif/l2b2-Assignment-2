@@ -12,19 +12,26 @@ const createUserIntoDB = async (user: TUser) => {
 }
 
 const getAllUserFromDB = async () => {
-  const result = await User.find()
+  const result = await User.find(
+    {},
+    { username: 1, fullName: 1, age: 1, email: 1, address: 1 },
+  )
   return result
 }
 
 const getSingleUserFromDB = async (userId: number) => {
+  const existsUser = await User.isUserExists(userId)
+  if (!existsUser) {
+    throw new Error('user is not found')
+  }
   const result = await User.findOne({ userId })
   return result
 }
 
 const updateUserInfoDB = async (userId: number, updatedUserData: TUser) => {
-  const trueUser = await User.isUserExists(userId)
-  if (!trueUser) {
-    throw new Error('User is not found')
+  const existsUser = await User.isUserExists(userId)
+  if (!existsUser) {
+    throw new Error('user is not found')
   }
   const result = await User.findOneAndUpdate({ userId }, updatedUserData, {
     new: true,
@@ -33,11 +40,19 @@ const updateUserInfoDB = async (userId: number, updatedUserData: TUser) => {
 }
 
 const deleteUserFromDB = async (userId: number) => {
+  const existsUser = await User.isUserExists(userId)
+  if (!existsUser) {
+    throw new Error('user is not found')
+  }
   const result = await User.updateOne({ userId }, { isDeleted: true })
   return result
 }
 
 const addNewProductIntoDB = async (userId: number, product: TOrder) => {
+  const existsUser = await User.isUserExists(userId)
+  if (!existsUser) {
+    throw new Error('user is not found')
+  }
   const result = await User.updateOne(
     { userId },
     { $addToSet: { orders: product } },
