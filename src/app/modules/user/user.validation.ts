@@ -39,33 +39,27 @@ const userValidationSchema = z.object({
     invalid_type_error: 'userId must be a number',
   }),
   username: z.string({
-    required_error: 'username is required',
     invalid_type_error: 'username must be a string',
   }),
   password: z.string({
-    required_error: 'password is required',
     invalid_type_error: 'password must be a string',
   }),
   fullName: fullNameValidationSchema,
   age: z.number({
-    required_error: 'age is required',
     invalid_type_error: 'age must be a number',
   }),
   email: z
     .string({
-      required_error: 'email is required',
       invalid_type_error: 'email must be a string',
     })
     .refine((value) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value), {
       message: 'Invalid email format',
     }),
   isActive: z.boolean({
-    required_error: 'isActive is required',
     invalid_type_error: 'isActive must be a boolean',
   }),
   hobbies: z.array(
     z.string({
-      required_error: 'hobbies is required',
       invalid_type_error: 'hobbies must be a string',
     }),
   ),
