@@ -1,53 +1,41 @@
 import { z } from 'zod'
 
 const fullNameValidationSchema = z.object({
-  firstName: z.string().refine((value) => /^[A-Z][a-z]*$/.test(value), {
-    message: 'First name should start with a capital letter',
-  }),
-  lastName: z.string().refine((value) => /^[A-Z][a-z]*$/.test(value), {
-    message: 'Last name should start with a capital letter',
-  }),
+  firstName: z
+    .string()
+    .min(1)
+    .max(20)
+    .refine((value) => /^[A-Z]/.test(value), {
+      message: 'First Name must start with a capital letter',
+    }),
+  lastName: z.string(),
 })
 
 const addressValidationSchema = z.object(
   {
-    street: z.string({
-      required_error: 'Street is required',
-      invalid_type_error: 'Street must be a string',
-    }),
-    city: z.string({
-      required_error: 'City is required',
-      invalid_type_error: 'City must be a string',
-    }),
-    country: z.string({
-      required_error: 'Country is required',
-      invalid_type_error: 'Country must be a string',
-    }),
+    street: z.string(),
+    city: z.string(),
+    country: z.string(),
   },
   {
-    required_error: 'Address is required',
     invalid_type_error: 'Address must be an object',
   },
 )
 
 const orderValidationSchema = z.object({
   productName: z.string({
-    required_error: 'ProductName is required',
     invalid_type_error: 'ProductName must be a string',
   }),
   price: z.number({
-    required_error: 'Price is required',
     invalid_type_error: 'Price must be a number',
   }),
   quantity: z.number({
-    required_error: 'Quantity is required',
     invalid_type_error: 'Quantity must be a number',
   }),
 })
 
 const userValidationSchema = z.object({
   userId: z.number({
-    required_error: 'userId is required',
     invalid_type_error: 'userId must be a number',
   }),
   username: z.string({
@@ -68,7 +56,9 @@ const userValidationSchema = z.object({
       required_error: 'email is required',
       invalid_type_error: 'email must be a string',
     })
-    .email(),
+    .refine((value) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value), {
+      message: 'Invalid email format',
+    }),
   isActive: z.boolean({
     required_error: 'isActive is required',
     invalid_type_error: 'isActive must be a boolean',

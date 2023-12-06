@@ -4,7 +4,7 @@ import userValidationSchema from './user.validation'
 
 const createUser = async (req: Request, res: Response) => {
   try {
-    const { User: userData } = req.body
+    const userData = req.body
 
     const zodparsedData = userValidationSchema.parse(userData)
 
@@ -122,11 +122,13 @@ const deleteUser = async (req: Request, res: Response) => {
     const result = await UserServices.deleteUserFromDB(parseFloat(userId))
 
     // Sending response
-    res.status(200).json({
-      success: true,
-      message: 'User deleted successfully!',
-      data: result,
-    })
+    if (result.acknowledged === true) {
+      res.status(200).json({
+        success: true,
+        message: 'User deleted successfully!',
+        data: null,
+      })
+    }
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (error: any) {
     res.status(500).json({
@@ -143,7 +145,7 @@ const deleteUser = async (req: Request, res: Response) => {
 const addNewProduct = async (req: Request, res: Response) => {
   try {
     const userId = req.params.userId
-    const newProduct = req.body.product
+    const newProduct = req.body
 
     const result = await UserServices.addNewProductIntoDB(
       parseFloat(userId),
@@ -173,7 +175,7 @@ const addNewProduct = async (req: Request, res: Response) => {
 
 const getSingleUserOrders = async (req: Request, res: Response) => {
   try {
-    const userId = req.params.userId
+    const { userId } = req.params
 
     const result = await UserServices.getOrdersInfoFromDb(parseFloat(userId))
 
@@ -198,7 +200,7 @@ const getSingleUserOrders = async (req: Request, res: Response) => {
 
 const getUserTotalOrderAmount = async (req: Request, res: Response) => {
   try {
-    const userId = req.params.userId
+    const { userId } = req.params
 
     const result = await UserServices.getUserTotalOrderAmount(
       parseFloat(userId),

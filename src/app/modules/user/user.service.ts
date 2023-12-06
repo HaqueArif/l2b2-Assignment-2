@@ -1,5 +1,7 @@
 import { TOrder, TUser } from './user.interface'
 import User from './user.model'
+import bcrypt from 'bcrypt'
+import config from '../../config'
 
 const createUserIntoDB = async (user: TUser) => {
   if (await User.isUserExists(user.userId)) {
@@ -31,7 +33,15 @@ const updateUserInfoDB = async (userId: number, updatedUserData: TUser) => {
   if (!existsUser) {
     throw new Error('user is not found')
   }
+
+  if (updatedUserData.password) {
+    updatedUserData.password = await bcrypt.hash(
+      updatedUserData.password,
+      Number(config.bcrypt_salt_rounds),
+    )
+  }
   const result = await User.findOneAndUpdate({ userId }, updatedUserData, {
+    select: { password: 0 },
     new: true,
   })
   return result
@@ -63,7 +73,7 @@ const getOrdersInfoFromDb = async (userId: number) => {
   if (!existsUser) {
     throw new Error('user is not found')
   }
-  const result = await User.findOne({ userId }, { orders: 1 })
+  const result = await User.findOne({ userId }, { orders: 1, _id: 0 })
   return result
 }
 
@@ -74,12 +84,14 @@ const getUserTotalOrderAmount = async (userId: number) => {
   }
 
   const result = await User.aggregate([
-    { $match: { userId } },
     { $unwind: '$orders' },
+    { $match: { userId } },
     {
       $group: {
         _id: null,
-        totalPrice: { $sum: '$orders.price' },
+        totalPrice: {
+          $sum: { $multiply: ['$orders.price', '$orders.quantity'] },
+        },
       },
     },
     {

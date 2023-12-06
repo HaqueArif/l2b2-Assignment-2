@@ -27,7 +27,7 @@ export type TUser = {
   isActive: boolean
   hobbies: string[]
   address: TAddress
-  orders?: Array<TOrder>
+  orders?: TOrder[]
   isDeleted?: boolean
 }
 
