@@ -24,7 +24,7 @@ const getSingleUserFromDB = async (userId: number) => {
   if (!existsUser) {
     throw new Error('user is not found')
   }
-  const result = await User.findOne({ userId })
+  const result = await User.findOne({ userId }, { password: 0 })
   return result
 }
 
