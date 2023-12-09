@@ -6,7 +6,7 @@ import { UserRoutes } from './app/modules/user/user.route'
 //parsers
 app.use(express.json())
 app.use(cors())
-app.use('/users', UserRoutes)
+app.use('/api/users', UserRoutes)
 
 app.get('/', (req: Request, res: Response) => {
   res.send('Server is running!')

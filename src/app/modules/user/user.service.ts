@@ -5,9 +5,9 @@ import config from '../../config'
 
 const createUserIntoDB = async (user: TUser) => {
   if (await User.isUserExists(user.userId)) {
-    throw new Error('user is not found')
+    throw new Error('this userId or username or email already used')
   }
-  const result = await User.create(user)
+  const result = await User.create(user, { select: { password: 0 } })
   return result
 }
 
