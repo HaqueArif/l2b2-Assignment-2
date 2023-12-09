@@ -7,7 +7,7 @@ const createUserIntoDB = async (user: TUser) => {
   if (await User.isUserExists(user.userId)) {
     throw new Error('this userId or username or email already used')
   }
-  const result = await User.create(user, { select: { password: 0 } })
+  const result = await User.create(user)
   return result
 }
 
