@@ -4,7 +4,7 @@ import { UserController } from './user.controller'
 const router = express.Router()
 
 //create user
-router.post('/create-user', UserController.createUser)
+router.post('/', UserController.createUser)
 //get all users
 router.get('/', UserController.getAllUsers)
 //get single or specific user by userId

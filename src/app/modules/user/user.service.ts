@@ -7,7 +7,18 @@ const createUserIntoDB = async (user: TUser) => {
   if (await User.isUserExists(user.userId)) {
     throw new Error('this userId or username or email already used')
   }
-  const result = await User.create(user)
+  const createUser = await User.create(user)
+  const createUserToObject = createUser.toObject()
+
+  const result = {
+    ...createUserToObject,
+    password: undefined,
+    _id: undefined,
+    orders: undefined,
+    __v: undefined,
+    isDeleted: undefined,
+  }
+
   return result
 }
 
@@ -24,7 +35,10 @@ const getSingleUserFromDB = async (userId: number) => {
   if (!existsUser) {
     throw new Error('user is not found')
   }
-  const result = await User.findOne({ userId }, { password: 0 })
+  const result = await User.findOne(
+    { userId },
+    { password: 0, _id: 0, orders: 0, __v: 0, isDeleted: 0 },
+  )
   return result
 }
 
@@ -41,7 +55,7 @@ const updateUserInfoDB = async (userId: number, updatedUserData: TUser) => {
     )
   }
   const result = await User.findOneAndUpdate({ userId }, updatedUserData, {
-    select: { password: 0 },
+    select: { password: 0, _id: 0, orders: 0, __v: 0, isDeleted: 0 },
     new: true,
   })
   return result

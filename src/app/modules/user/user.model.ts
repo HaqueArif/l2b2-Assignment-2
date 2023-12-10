@@ -129,7 +129,7 @@ userSchema.pre('findOne', function (next) {
 userSchema.statics.isUserExists = async function (userId: number) {
   const existingUser = await User.findOne(
     { userId },
-    { password: 0, orders: 0 },
+    { password: 0, orders: 0, _id: 0, __v: 0 },
   )
   return existingUser
 }
